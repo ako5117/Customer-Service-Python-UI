@@ -1,0 +1,93 @@
+import datetime
+
+class CustomerFeedbackSystem:
+    def __init__(self):
+        # Initialize an empty list to store feedback
+        self.feedback_list = []
+
+    def add_feedback(self, customer_name, rating, comment):
+        # Create a dictionary to store feedback details
+        feedback = {
+            "customer_name": customer_name,
+            "rating": rating,
+            "comment": comment,
+            "date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        # Add the feedback to the list
+        self.feedback_list.append(feedback)
+        print("Feedback added successfully!")
+
+    def view_feedback(self):
+        # Check if there's any feedback to display
+        if not self.feedback_list:
+            print("No feedback available.")
+            return
+
+        # Display all feedback
+        for idx, feedback in enumerate(self.feedback_list, 1):
+            print(f"\nFeedback #{idx}:")
+            print(f"Customer: {feedback['customer_name']}")
+            print(f"Rating: {feedback['rating']}/5")
+            print(f"Comment: {feedback['comment']}")
+            print(f"Date: {feedback['date']}")
+
+    def calculate_average_rating(self):
+        # Check if there's any feedback to calculate the average
+        if not self.feedback_list:
+            return 0
+
+        # Calculate the average rating
+        total_rating = sum(feedback['rating'] for feedback in self.feedback_list)
+        return total_rating / len(self.feedback_list)
+
+def main():
+    # Create an instance of the CustomerFeedbackSystem
+    feedback_system = CustomerFeedbackSystem()
+
+    while True:
+        # Display the main menu
+        print("\n--- Customer Feedback System ---")
+        print("1. Add Feedback")
+        print("2. View All Feedback")
+        print("3. View Average Rating")
+        print("4. Exit")
+
+        # Get user choice
+        choice = input("Enter your choice (1-4): ")
+
+        if choice == '1':
+            # Get feedback details from the user
+            name = input("Enter customer name: ")
+            while True:
+                try:
+                    rating = int(input("Enter rating (1-5): "))
+                    if 1 <= rating <= 5:
+                        break
+                    else:
+                        print("Rating must be between 1 and 5.")
+                except ValueError:
+                    print("Please enter a valid number.")
+            comment = input("Enter comment: ")
+            
+            # Add the feedback
+            feedback_system.add_feedback(name, rating, comment)
+
+        elif choice == '2':
+            # View all feedback
+            feedback_system.view_feedback()
+
+        elif choice == '3':
+            # Calculate and display average rating
+            avg_rating = feedback_system.calculate_average_rating()
+            print(f"\nAverage Rating: {avg_rating:.2f}/5")
+
+        elif choice == '4':
+            # Exit the program
+            print("Thank you for using the Customer Feedback System. Goodbye!")
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
